@@ -74,7 +74,47 @@ node* recursivereverse(node* &head){
     head->next=NULL;
     return newhead;
 }
+void makecycle(node* &head, int pos){
+    node* temp=head;
+    node *startnode;
+    int count=1;
+    while(temp->next!=NULL){
+        if(count==pos){
+            startnode=temp;
+        }
+        temp=temp->next;
+        count++;
+    }
+    temp->next=startnode;
+}
+bool detectcycle(node* &head){
+    node* slow=head;
+    node* fast=head;
+    while(fast->next!=NULL){
+        slow=slow->next;
+        fast=fast->next->next;
 
+        if(fast==slow){
+            return true;
+        }
+    }
+    return false;
+}
+void removecycle(node* &head){
+    node* slow=head;
+    node* fast=head;
+    while(fast->next!=NULL){
+        slow=slow->next;
+        fast=fast->next->next;
+
+        if(slow==fast){fast=head; break;}
+    }
+    while(fast->next!=slow->next){
+        fast=fast->next;
+        slow=slow->next;
+    }
+    slow->next=NULL;
+}
 
 void display(node* head){
      while(head!=NULL){
@@ -88,12 +128,16 @@ int main(){
     for(0,5){
         insrtbytail(head,i);
     }
-    insertbyhead(head,-1);
+  //  insertbyhead(head,-1);
     display(head);
     cout<<search(head,5)<<endl;
-    deletion(head,3);
+  //  deletion(head,3);
+  makecycle(head,3);
+  cout<<detectcycle(head)<<endl;
+  removecycle(head);
+  cout<<detectcycle(head)<<endl;
   //  node* newhead=reverselist(head);
-    node* rnewhead=recursivereverse(head);
-    display(rnewhead);
+  //  node* rnewhead=recursivereverse(head);  
+   display(head);
 
 }
